@@ -1,0 +1,28 @@
+2026-05-12 
+
+Task 1: Build Auth Model [Done]
+Task 2: Set up Auth Routes [Done]
+Task 3: Build Freelancer model [Done]
+Task 4: Build a Client Model [Done]
+Task 5: Build a Signup controller and What it will do is it create a user in auth collection and also it will create a freelancer or client according to the role given by user and also we will store just the userId in a freelancer model and also test the API [Done]
+Task 6: Build a Login API Where user can login with the Phone and password and also use JWT Authentication in our app and we will send a token in cookie and we will build it nice and production ready for an authentication.[Done] 
+Now Tomorrow First thing I Will do is to create an Update Profile API for the freelancer and after that getProfile and More 
+
+2026-05-13
+
+Let's set up freelancer routes, Now the Main task for today is to make some freelancer routes and make it well so first things that comes up into my mind is that the freelancer should be able to update their certain profile data so we will divide So we are going to make update APIs so freelancer can update what 
+
+1. Update experience
+2. Update education 
+3. Update Certification
+4. Update Links 
+5. Basic Profile Data: Name, Professional Title, adress, bio, availablity 
+6. Update Skills 
+7. Update Category 
+
+There Will be 7 APIs to update the freelancer Profile okay that's good scalable and maintainable so i will say its good.. 
+
+Task 1: Build an API to update the basic profile Data of the freelancer [Done]
+Task 2: Build an API to update the skills of the freelancer [Done]
+Task 3: Let's Again Build 2 APIs one to add Category and one to remove category as well and test them both [Done]
+Task 4: Let's Build an API to add and remove Links 
