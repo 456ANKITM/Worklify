@@ -89,7 +89,7 @@ const freelancerSchema = new mongoose.Schema ({
     education: [educationSchema],
     certifications: [certificationSchema],
     links: [linkSchema],
-},{timeStamps:true})
+},{timestamps:true})
 
 const Freelancer = mongoose.model("Freelancer", freelancerSchema);
 

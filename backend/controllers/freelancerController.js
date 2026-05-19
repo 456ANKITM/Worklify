@@ -199,6 +199,41 @@ export const removeCategory = async (req, res) => {
 export const addLinks = async (req, res) => {
     try {
         
+        const userId = req.user._id;
+        const {links} = req.body;
+
+        if (!Array.isArray(links) || links.length === 0) {
+            return res.status(400).json({
+                success:false, 
+                message:"Links Must be an non-empty array"
+            })
+        }
+
+        for (const link of links) {
+            if(!link.title || !link.url) {
+                return res.status(400).json({
+                    success:false, 
+                    message:"Each link must contain title and url"
+                })
+            }
+        }
+
+       const freelancer = await Freelancer.findOne({userId});
+       if(!freelancer) {
+        return res.status(404).json({
+            success:false,
+            message:'Freelancer not found'
+        })
+       }
+
+       freelancer.links.push(...links)
+       await freelancer.save();
+
+       return res.status(200).json({
+        success:true,
+        message:"Links added successfully",
+        links:freelancer.links
+       })
     } catch (error) {
             return res.status(500).json({
             success:false,
@@ -207,3 +242,198 @@ export const addLinks = async (req, res) => {
         })
     }
 }
+
+export const removeLinks = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const {linkId} = req.body;
+
+        if(!linkId) {
+            return res.status(400).json({
+                success:false,
+                message:"Link ID is required"
+            })
+        }
+
+        const freelancer = await Freelancer.findOne({userId})
+        if(!freelancer){
+            return res.status(404).json({
+                success:false, 
+                message:"Freelancer Not found"
+            })
+        }
+
+        freelancer.links = freelancer.links.filter(
+            (link) => link._id.toString() !== linkId
+        )
+
+        await freelancer.save();
+
+        return res.status(200).json({
+            success:true, 
+            message:"Link removed successfully",
+            links:freelancer.links
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success:false, 
+            message:"Server Error",
+            error:error.message
+        })
+    }
+}
+
+export const addExperience = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const {experience} = req.body;
+
+        if(!Array.isArray(experience) || experience.length === 0) {
+            return res.status(400).json({
+                success:false, 
+                message:"Experience must be a non-empty array"
+            })
+        }
+        const freelancer = await Freelancer.findOne({userId})
+
+        if(!freelancer) {
+            return res.status(404).json({
+                success:false, 
+                message:"Freelancer not found"
+            })
+        }
+
+        freelancer.experience.push(...experience);
+
+        await freelancer.save();
+
+        return res.status(200).json({
+            success:true, 
+            message:"Experience added successfully",
+            experience: freelancer.experience
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success:false, 
+            message:"Server Error",
+            error: error.message
+        })
+    }
+}
+
+export const removeExperience = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const {experienceId} = req.body;
+
+        if(!experienceId) {
+            return res.status(400).json({
+                success:false, 
+                message:"Experience ID is required"
+            })
+        }
+
+        const freelancer = await Freelancer.findOne({userId})
+        if(!freelancer) {
+            return res.status(404).json({
+                success:false, 
+                message:"Freelancer Not found"
+            })
+        }
+
+        // Only keep those experience whose id does not match with experienceId
+        freelancer.experience = freelancer.experience.filter(
+            (exp) => exp._id.toString() !== experienceId
+        )
+
+        await freelancer.save();
+
+        return res.status(200).json({
+            success:true,
+            message:'Experience removed successfully'
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            success:false, 
+            message:"Server Error", 
+            error:error.message
+        })
+    }
+}
+
+export const addEducation = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const {education} = req.body; 
+
+        if(!Array.isArray(education) || education.length === 0) {
+            return res.status(400).json({
+                success:false, 
+                message:"Education must be a non-empty array"
+            })
+        }
+        const freelancer = await Freelancer.findOne({userId});
+
+        if(!freelancer) {
+            return res.status(404).json({
+                success:false, 
+                message:"Freelancer not found"
+            })
+        }
+
+        freelancer.education.push(...education)
+        await freelancer.save()
+
+        return res.status(200).json({
+            success:true, 
+            message:"Education added successfully",
+            education: freelancer.education
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success:false, 
+            message:"Server Error",
+            error: error.message
+        })
+    }
+}
+
+export const removeEducation = async (req, res) => {
+    try {
+        const userId = req.user._id; 
+        const {educationId} = req.body; 
+        if(!educationId) {
+            return res.status(400).json({
+                success:false, 
+                message:"Education ID is required"
+            })
+        }
+        const freelancer = await Freelancer.findOne({userId})
+        if(!freelancer) {
+            return res.status(404).json({
+                success:false, 
+                message:"Freelancer Not found",
+            })
+        }
+
+        freelancer.education = freelancer.education.filter(
+            (edu) => edu._id.toString() !== educationId
+        )
+
+        await freelancer.save();
+
+        return res.status(200).json({
+            success:true,
+            message:"Education removed successfully",
+            education: freelancer.education
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success:false, 
+            message:"Server Error",
+            error:error.message
+        })
+    }
+}
+
