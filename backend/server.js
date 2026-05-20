@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import freelancerRoutes from "./routes/freelancerRoutes.js";
+import connectCloudinary from "./config/cloudinary.js";
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 await connectDB();
+await connectCloudinary();
 
 app.listen(PORT, () => {
   console.log("Server running on port 4000");

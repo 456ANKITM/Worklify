@@ -1,4 +1,6 @@
 import Freelancer from "../models/Freelancer.js";
+import { cloudinary } from "../config/cloudinary.js";
+import { uploadToCloudinary } from "../utils/cloudinaryUpload.js";
 
 export const updateBasicProfile = async (req, res) => {
     try {
@@ -560,6 +562,82 @@ export const toogleAvailability = async (req, res) => {
         
     } catch (error) {
           return res.status(500).json({
+            success:false, 
+            message:"Server Error",
+            error:error.message
+        })
+    }
+}
+
+export const updateProfileImage = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        if(!req.files || !req.files.profileImage) {
+            return res.status(400).json({
+                success:false, 
+                message:"Profile image is required"
+            })
+        }
+        const file = req.files.profileImage[0];
+
+        const freelancer = await Freelancer.findOne({userId});
+
+        if(!freelancer) {
+            return res.status(404).json({
+                success:false, 
+                message:"Freelancer Not found"
+            })
+        }
+
+        const uploadedImage = await uploadToCloudinary(file.buffer, "freelancer-profile-images");
+
+        freelancer.profileImage = uploadedImage.secure_url;
+
+        await freelancer.save();
+
+        return res.status(200).json({
+            success:true, 
+            message:"Profile image updated successfully",
+            profileImage:freelancer.profileImage
+        })
+        
+    } catch (error) {
+         return res.status(500).json({
+            success:false, 
+            message:"Server Error",
+            error:error.message
+        })
+    }
+}
+
+export const removeProfileImage = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const freelancer = await Freelancer.findOne({userId});
+        if(!freelancer) {
+            return res.status(404).json({
+                success:false,
+                message:'Freelancer not found'
+            })
+        }
+        if(!freelancer.profileImage) {
+            return res.status(400).json({
+                success:false, 
+                message:"No Profile Image found"
+            })
+        }
+
+        freelancer.profileImage = "";
+
+        await freelancer.save();
+
+        return res.status(200).json({
+            success:true, 
+            message:"Profile Image is removed successfullly"
+        })
+        
+    } catch (error) {
+         return res.status(500).json({
             success:false, 
             message:"Server Error",
             error:error.message
