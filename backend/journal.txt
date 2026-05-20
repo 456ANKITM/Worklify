@@ -15,3 +15,4 @@ Task 2: Build and API to add and remove profile image for the client [Done]
 
 Task 3: Build a Job Schema [Done]
 
+Task 4: Let's setup the jobRoutes and build the post job API and test it 
