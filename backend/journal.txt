@@ -9,4 +9,9 @@ Task 4: Set up Cloduinary You can get reference from our project servigo or real
 
 Now We are going to make some client profile APIs to update the profiles of the client 
 
-Task 1: Build a Controller to update the basic profiles of the client like ClientName, description, address, industry 
+Task 1: Build an API to update the basic profiles of the client like ClientName, description, address, industry [Done]
+
+Task 2: Build and API to add and remove profile image for the client [Done]
+
+Task 3: Build a Job Schema [Done]
+
