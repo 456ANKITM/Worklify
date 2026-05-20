@@ -1,6 +1,6 @@
 import express from "express";
 import { protect } from "../middleware/authMiddleware.js";
-import { addCategory, addLinks, addSkills, removeCategory, removeLinks, removeSkills, updateBasicProfile } from "../controllers/freelancerController.js";
+import { addCategory, addCertification, addEducation, addExperience, addLinks, addSkills, removeCategory, removeCertification, removeEducation, removeExperience, removeLinks, removeSkills, toogleAvailability, updateBasicProfile } from "../controllers/freelancerController.js";
 
 const router = express.Router();
 
@@ -11,5 +11,12 @@ router.post("/addCategory", protect, addCategory);
 router.post("/removeCategory", protect, removeCategory);
 router.post("/addLinks", protect, addLinks);
 router.delete("/removeLinks", protect, removeLinks);
+router.post("/addExperience", protect, addExperience);
+router.delete("/removeExperience", protect, removeExperience);
+router.post("/addEducation", protect, addEducation);
+router.delete("/removeEducation", protect, removeEducation );
+router.post("/addCertification", protect, addCertification);
+router.delete("/removeCertification", protect, removeCertification);
+router.put("/changeAvailability", protect, toogleAvailability)
 
 export default router;

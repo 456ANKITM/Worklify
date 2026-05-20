@@ -437,3 +437,132 @@ export const removeEducation = async (req, res) => {
     }
 }
 
+export const addCertification = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const {certifications} = req.body;
+
+        if(!Array.isArray(certifications) || certifications.length === 0) {
+            return res.status(400).json({
+                success:false, 
+                message:"Certifications must be a non-empty array"
+            })
+        }
+
+        for (const cert of certifications) {
+           if(!cert.name || !cert.issuingOrganization || !cert.issueDate) {
+            return res.status(400).json({
+                success:false, 
+                message:"Each Certification must have name, issuingOrganization and issueDate"
+            })
+           }
+        }
+
+        const freelancer = await Freelancer.findOne({userId})
+
+        if(!freelancer) {
+            return res.status(404).json({
+                success:false, 
+                message:"Freelancer not found"
+            })
+        }
+
+        freelancer.certifications.push(...certifications)
+
+        await freelancer.save();
+
+        return res.status(200).json({
+            success:false, 
+            message:"Certifications added successfully",
+            certifications: freelancer.certifications
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success:false, 
+            message:"Server Error",
+            error:error.message
+        })
+    }
+}
+
+export const removeCertification = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const {certificationId} = req.body;
+
+        if(!certificationId) {
+            return res.status(400).json({
+                success:false, 
+                message:"certificationId is required"
+            })
+        }
+
+        const freelancer = await Freelancer.findOne({userId})
+
+        if(!freelancer) {
+            return res.status(404).json({
+                success:false, 
+                message:"Freelancer not found"
+            })
+        }
+
+        freelancer.certifications = freelancer.certifications.filter(
+            (cert) => cert._id.toString() !==  certificationId
+        )
+
+        await freelancer.save();
+
+        return res.status(200).json({
+            success:false, 
+            message:"Certifications removed successfully"
+        })
+        
+    } catch (error) {
+          return res.status(500).json({
+            success:false, 
+            message:"Server Error",
+            error:error.message
+        })
+    }
+}
+
+
+export const toogleAvailability = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const {availability} = req.body;
+
+        if(!["available", "not-available"].includes(availability)) {
+            return res.status(400).json({
+                success:false, 
+                message:"Invalid availability value"
+            })
+        }
+
+        const freelancer = await Freelancer.findOneAndUpdate(
+            {userId}, 
+            {availability},
+            {new:true}
+        )
+
+        if(!freelancer) {
+            return res.status(404).json({
+                success:false, 
+                message:"freelancer not found"
+            })
+        }
+
+        return res.status(200).json({
+            success:true, 
+            message:'Availability Updated successfully',
+            availability: freelancer.availability
+        })
+        
+    } catch (error) {
+          return res.status(500).json({
+            success:false, 
+            message:"Server Error",
+            error:error.message
+        })
+    }
+}

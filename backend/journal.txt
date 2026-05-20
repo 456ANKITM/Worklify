@@ -1,3 +1,6 @@
-2026-05-18 
+2026-05-29 
 
-Task 1: 
+Task 1: Build 2 APIs to add and remove Certifications [Done]
+Task 2: Test Those 6 APIs that You have Build [Done]
+Task 3: Build an API to toogle availability for freelancer and test it [Done]
+Task 4: Set up Cloduinary You can get reference from our project servigo or real-time chat app upload profile image on cloudinary build an API to upload profile image to cloudinary 
