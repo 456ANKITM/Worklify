@@ -8,7 +8,7 @@ router.post("/postJob", protect, postJob)
 router.get("/getAllJobs", getAllJobs);
 router.get("/searchJobs", searchJobs);
 router.get("/getJobsByProfile", protect, getJobsBasedOnProfile);
-router.get("/getJobsByCategory", protect, getJobsByCategory );
+router.get("/category/:category", getJobsByCategory)
 
 export default router; 
 

@@ -67,7 +67,24 @@ const freelancerSchema = new mongoose.Schema ({
     freelancerName:String,
     professionalTitle:String,
     profileImage:String,
-    category:[String],
+    category:{
+        type:[String], 
+        enum:[
+            "Software Development",
+            "UI/UX Design",
+            "Graphic Design",
+            "Digital Marketing",
+            "Content Writing",
+            "Video Editing",
+            "Cybersecurity",
+            "AI and ML",
+            "Data Science",
+            "DevOps and Cloud",
+            "QA and Testing",
+            "Social Media Management"
+        ],
+        required:true
+    }, 
     skills:[String],
     bio:String,
     availability:{

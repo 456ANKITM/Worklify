@@ -51,6 +51,20 @@ const jobSchema = new mongoose.Schema({
     },
     category:{
         type:String, 
+        enum:[
+            "Software Development",
+            "UI/UX Design",
+            "Graphic Design",
+            "Digital Marketing",
+            "Content Writing",
+            "Video Editing",
+            "Cybersecurity",
+            "AI and ML",
+            "Data Science",
+            "DevOps and Cloud",
+            "QA and Testing",
+            "Social Media Management"
+        ],
         required:true
     }, 
     skillsRequired:{

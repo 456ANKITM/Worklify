@@ -21,3 +21,9 @@ Task 5: Jobs Return APIs -> Return All Jobs
                          -> According to Search Term 
                          -> According to user Profile 
                          -> According to Category 
+
+
+2026-05-21 
+
+Task 1: Add Category in both Job and Freelancer Schea as enum Value 
+Task 2: Build the API to get the Jobs By Category and test all those 4 APIs 

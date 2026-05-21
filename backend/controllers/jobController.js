@@ -199,4 +199,30 @@ export const getJobsBasedOnProfile = async (req, res) => {
     }
 };
 
-export const getJobsByCategory = async (req, res) => {};
+export const getJobsByCategory = async (req, res) => {
+  try {
+    const {category} = req.params;
+    if(!category) {
+      return res.status(400).json({
+        success:false, 
+        message:'Category is required'
+      })
+    }
+    const jobs = await Job.find({category, status:"open"})
+    .populate("clientId", "clientName profileImage isVerified")
+    .sort({createdAt:-1})
+
+    return res.status(200).json({
+      success:true, 
+      message:"Job Fetched successfully",
+      totalJobs: jobs.length,
+      data: jobs
+    })
+  } catch (error) {
+ return res.status(500).json({
+      success: false,
+      message: "Server Error",
+      error: error.message,
+    });
+  }
+};
