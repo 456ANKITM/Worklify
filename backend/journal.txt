@@ -25,5 +25,6 @@ Task 5: Jobs Return APIs -> Return All Jobs
 
 2026-05-21 
 
-Task 1: Add Category in both Job and Freelancer Schea as enum Value 
-Task 2: Build the API to get the Jobs By Category and test all those 4 APIs 
+Task 1: Add Category in both Job and Freelancer Schea as enum Value [Done]
+Task 2: Build the API to get the Jobs By Category and test all those 4 APIs  [Done]
+Task 3: Build the API to Submit the Proposal for the job by the freelancer and test it [Done]

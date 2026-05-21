@@ -1,26 +1,5 @@
 import mongoose from "mongoose"; 
 
-const proposalSchema = new mongoose.Schema ({
-    freelancerId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Freelancer',
-        required:true, 
-    },
-    coverLetter:{
-        type:String, 
-        required:true
-    },
-    proposedBudget:{
-        type:Number, 
-        required:true
-    }, 
-    estimatedTime:String,
-    status:{
-        type:String,
-        enum:["pending", "accepted", "rejected"],
-        default:"pending"
-    }
-},{timestamps:true})
 
 const jobSchema = new mongoose.Schema({
     clientId:{
@@ -75,7 +54,6 @@ const jobSchema = new mongoose.Schema({
         type:Number, 
         required:true
     },
-    proposals:[proposalSchema],
     selectedFreelancer:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Freelancer",
