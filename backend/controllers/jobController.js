@@ -291,3 +291,111 @@ export const submitProposal = async (req, res) => {
     });
   }
 }
+
+export const getAllProposalsForJob = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const {jobId} = req.params;
+
+    if(req.user.role !== "client") {
+      return res.status(403).json({
+        success:false, 
+        message:"Only Clients Can View the Proposals"
+      })
+    }
+
+    const client = await Client.findOne({userId})
+
+    if(!client) {
+      return res.status(404).json({
+        success:false, 
+        message:"Client Profile not Found"
+      })
+    }
+
+    const job = await Job.findById(jobId);
+
+    if(!job) {
+      return res.status(404).json({
+        success:false, 
+        message:"Job not found"
+      })
+    }
+
+    // Verify Ownership 
+    if(job.clientId.toString() !== client._id.toString()) {
+      return res.status(403).json({
+        success:false, 
+        message:"Ypu are not allowed to view the proposals"
+      })
+    }
+
+    const proposals = await Proposal.find({jobId})
+    .populate({path:"freelancerId", select:"freelancerName professionalTitle profileImage skills averageRating certifications experience education isVerified reviews category"})
+    .sort({createdAt:-1})
+
+    // Ranking 
+    const rankedProposals = proposals.map((proposal)=>{
+      const freelancer = proposal.freelancerId;
+      let score = 0;
+      
+      // Skills matching 
+      const requiredSkills = job.skillsRequired || [];
+      const freelancerSkills = freelancer.skills || [];
+      const matchedSkills = requiredSkills.filter((skill) => 
+        freelancerSkills.includes(skill))
+
+      score += matchedSkills.length * 15;
+
+      // Average Rating
+      score += freelancer.averageRating * 10;
+
+      // certifications
+      score += freelancer.certifications.length * 5;
+
+      //experience
+      score += freelancer.experience.length * 8;
+
+      //education
+      score += freelancer.education.length * 3;
+
+      // Verified Freelancer 
+      if(freelancer.isVerified) {
+        score += 20;
+      }
+
+      // Reviews Count 
+      score += freelancer.reviews.length * 2;
+
+      // Category match
+      if(freelancer.category.includes(job.category)) {
+         score += 40;
+      }
+
+      return {
+        proposal,
+        rankingScore: score,
+        matchedSkillsCount: matchedSkills.length
+      }
+    })
+
+    // Sort by descending order 
+    rankedProposals.sort(
+      (a,b) => b.rankingScore - a.rankingScore
+    )
+
+    return res.status(200).json({
+      success:true, 
+      message:"Ranked Proposals fetched successfully",
+      totalProposals: rankedProposals.length,
+      data:rankedProposals
+    })
+
+  } catch (error) {
+      return res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: error.message,
+    });
+  }
+}

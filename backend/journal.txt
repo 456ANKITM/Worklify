@@ -28,3 +28,11 @@ Task 5: Jobs Return APIs -> Return All Jobs
 Task 1: Add Category in both Job and Freelancer Schea as enum Value [Done]
 Task 2: Build the API to get the Jobs By Category and test all those 4 APIs  [Done]
 Task 3: Build the API to Submit the Proposal for the job by the freelancer and test it [Done]
+
+2026-05-22 
+
+Task 4: Build the API to get all submitted proposal for a job and only the person who posted the job is allowed to do this and one main thing among those proposals rank the proposals according to the freelancer profile and check their skills their average rating their certifications experience edudation everything we need to rank the top freelancers the best freelancer for that job at top and then grdaually decreases [Done]
+
+2026-05-23
+
+Task 1: 
