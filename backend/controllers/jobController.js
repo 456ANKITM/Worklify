@@ -4,6 +4,7 @@ import Freelancer from "../models/Freelancer.js";
 import Job from "../models/Job.js";
 import Proposal from "../models/Proposal.js";
 import mongoose from "mongoose";
+import { createNotification } from "../utils/createNotification.js";
 
 export const postJob = async (req, res) => {
   try {
@@ -280,6 +281,14 @@ export const submitProposal = async (req, res) => {
       status:"pending"
     });
 
+    await createNotification({
+      recipientId: job.clientId,
+      senderId: freelancer._id, 
+      type:"proposal_submitted",
+      title:"New Proposal Received",
+      message:`${freelancer.freelancerName} has submitted a proposal for your job as ${job.title}`
+    })
+
     return res.status(201).json({
       success:true,
       message:"Proposal Submitted successfully",
@@ -515,6 +524,14 @@ if(selectedProposal.status !== "pending") {
 
     await session.commitTransaction();
 
+    await createNotification({
+      recipientId: selectedProposal.freelancerId, 
+      senderId: client._id, 
+      type:"freelancer_hired", 
+      title:"You got hired!", 
+      message:`${client.clientName} has hired you for the job: ${job.title}`
+    })
+
     return res.status(200).json({
       success:true, 
       message:"Freelancer hired successfully", 
@@ -544,7 +561,9 @@ export const sendCompletionRequest = async (req, res) => {
         message:"Only freelancers can send completion request"
       })
     }
-    const agreement = await Agreement.findById(agreementId);
+    const agreement = await Agreement.findById(agreementId)
+    .populate("freelancerId", "freelancerName")
+    .populate("jobId", "title")
     if(!agreement) {
       return res.status(404).json({
         success:false, 
@@ -558,6 +577,13 @@ export const sendCompletionRequest = async (req, res) => {
     }
 
     await agreement.save();
+    await createNotification({
+      recipientId: agreement.clientId,
+      senderId: agreement.freelancerId, 
+      type:"completion_requested", 
+      title:"Wok submited for review", 
+      message:`${agreement.freelancerId.freelancerName} has sent a completion request for ${agreement.jobId.title}`
+    })
     return res.status(200).json({
       success:true, 
       message:"Completion request sent successfully",
@@ -586,7 +612,10 @@ export const approveCompletionRequest = async (req, res) => {
       })
     }
 
-    const agreement = await Agreement.findById(agreementId).session(session);
+    const agreement = await Agreement.findById(agreementId)
+    .populate("clientId", "clientName")
+    .populate("jobId", "title")
+    .session(session);
 
     if(!agreement) {
       await session.abortTransaction()
@@ -623,6 +652,14 @@ export const approveCompletionRequest = async (req, res) => {
 
     await session.commitTransaction();
 
+    await createNotification({
+      recipientId: agreement.freelancerId,
+      senderId: agreement.clientId,
+      type:"completion_approved",
+      title:"Project Completed",
+      message:`${agreement.clientId.clientName} has approved your completion request for the job ${agreement.jobId.title}, The Payment will be released soon`
+    })
+
     return res.status(200).json({
       success:true, 
       message:"Project Completed Successfully",
@@ -654,6 +691,9 @@ export const rejectCompletionRequest = async (req, res) => {
     }
 
     const agreement = await Agreement.findById(agreementId)
+    .populate("clientId", "clientName")
+    .populate("jobId", "title")
+    
     if(!agreement) {
       return res.status(404).json({
         success:false, 
@@ -671,6 +711,14 @@ export const rejectCompletionRequest = async (req, res) => {
     agreement.completionRequest.status = "rejected",
     agreement.completionRequest.message = agreement.completionRequest.message + ` | Rejected Reason: ${reason}`
     await agreement.save();
+
+        await createNotification({
+      recipientId: agreement.freelancerId,
+      senderId: agreement.clientId,
+      type:"completion_approved",
+      title:"Project Completed",
+      message:`${agreement.clientId.clientName} has rejected your completion request for the job ${agreement.jobId.title} | Reason: ${reason}`
+    })
 
     return res.status(200).json({
       success:false, 
