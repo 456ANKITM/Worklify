@@ -532,3 +532,156 @@ if(selectedProposal.status !== "pending") {
     session.endSession()
   }
 }
+
+export const sendCompletionRequest = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const {agreementId} = req.params;
+    const {message} = req.body; 
+    if(req.user.role !== "freelancer") {
+      return res.status(403).json({
+        success:false, 
+        message:"Only freelancers can send completion request"
+      })
+    }
+    const agreement = await Agreement.findById(agreementId);
+    if(!agreement) {
+      return res.status(404).json({
+        success:false, 
+        message:"Agreement not found"
+      })
+    }
+    agreement.completionRequest = {
+      status:"requested",
+      message,
+      requestedAt: new Date()
+    }
+
+    await agreement.save();
+    return res.status(200).json({
+      success:true, 
+      message:"Completion request sent successfully",
+      data: agreement
+    })
+  } catch (error) {
+    return res.status(500).json({
+      success:false, 
+      message:"Server Error",
+      error: error.message
+    })
+  }
+}
+
+export const approveCompletionRequest = async (req, res) => {
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction()
+    const userId = req.user._id;
+    const {agreementId} = req.params;
+
+    if(req.user.role !== "client") {
+      return res.status(403).json({
+        success:false, 
+        message:"Only Client Can approve Completion"
+      })
+    }
+
+    const agreement = await Agreement.findById(agreementId).session(session);
+
+    if(!agreement) {
+      await session.abortTransaction()
+      return res.status(404).json({
+        success:false, 
+        message:"Agreement not found"
+      })
+    }
+
+    if(agreement.completionRequest.status !== "requested") {
+      await session.abortTransaction();
+      return res.status(400).json({
+        success:false, 
+        message:"No Pending Completion request"
+      })
+    }
+
+    // update agreement
+    agreement.completionRequest.status="approved";
+    agreement.status = "completed"
+
+    await agreement.save({session})
+
+    // Update the job too
+    await Job.findByIdAndUpdate(
+      agreement.jobId, 
+      {
+        $set: {
+          status:"completed"
+        }
+      },
+      {session}
+    )
+
+    await session.commitTransaction();
+
+    return res.status(200).json({
+      success:true, 
+      message:"Project Completed Successfully",
+      data:agreement
+    })
+  } catch (error) {
+    await session.abortTransaction()
+    return res.status(500).json({
+      success:false, 
+      message:"Server Error",
+      error: error.message
+    })
+  } finally {
+    session.endSession();
+  }
+};
+
+export const rejectCompletionRequest = async (req, res) => {
+  try {
+    const {userId} = req.user._id;
+    const {agreementId} = req.params;
+    const {reason} = req.body;
+
+    if(req.user.role !== "client") {
+      return res.status(403).json({
+        success:false, 
+        message:"Only Client Can reject Completion"
+      })
+    }
+
+    const agreement = await Agreement.findById(agreementId)
+    if(!agreement) {
+      return res.status(404).json({
+        success:false, 
+        message:"Agreement not found"
+      })
+    }
+
+    if(agreement.completionRequest.status !== "requested") {
+      return res.status(400).json({
+        success:false, 
+        message:"No Pending Completion request"
+      })
+    }
+
+    agreement.completionRequest.status = "rejected",
+    agreement.completionRequest.message = agreement.completionRequest.message + ` | Rejected Reason: ${reason}`
+    await agreement.save();
+
+    return res.status(200).json({
+      success:false, 
+      message:"Completion request rejected, project continues"
+    })
+  } catch (error) {
+    return res.status(500).json({
+      success:false, 
+      message:"Server Error",
+      error : error.message
+    })
+    
+  }
+}

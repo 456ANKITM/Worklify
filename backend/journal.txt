@@ -36,3 +36,5 @@ Task 4: Build the API to get all submitted proposal for a job and only the perso
 2026-05-23
 
 Task 1: Build an API to hire freelancer and if 1 freelancer is hired then we need to reject all other proposals and change job status and also create an agreement between the client and freelancer for that job so we need to have an agreement schema also so we will build that and if there any other features that we need to include here then also tell me 
+
+Task 2: After Completing the job the freelancer will send a Completion request to the client for that job and then client will either accept it or reject if he accepts then the job becomes completed and if he rejects it then job goes back to in-progress so basically we will need 3 APIs to send Completion request Accept that reqquest or reject that request and also if if we need any functionality then add it and maybe we also need to change our job schema an add completion Request field in that or not 

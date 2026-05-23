@@ -43,6 +43,15 @@ const agreementSchema = new mongoose.Schema({
             "refunded"
         ],
         default:"pending"
+    },
+    completionRequest: {
+        status:{
+            type:String, 
+            enum:["none", "requested", "approved", "rejected"],
+            default:"none"
+        },
+        message:String, 
+        requestedAt: Date
     }
 },{timestamps:true});
 
