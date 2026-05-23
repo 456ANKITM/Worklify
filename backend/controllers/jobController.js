@@ -1,7 +1,9 @@
+import Agreement from "../models/Agreement.js";
 import Client from "../models/Client.js";
 import Freelancer from "../models/Freelancer.js";
 import Job from "../models/Job.js";
 import Proposal from "../models/Proposal.js";
+import mongoose from "mongoose";
 
 export const postJob = async (req, res) => {
   try {
@@ -397,5 +399,136 @@ export const getAllProposalsForJob = async (req, res) => {
       message: "Server error",
       error: error.message,
     });
+  }
+}
+
+export const hireFreelancer = async (req, res) => {
+  const session = await mongoose.startSession()
+  try {
+    session.startTransaction()
+
+    const userId = req.user._id;
+    const {jobId, proposalId} = req.params;
+
+    if(req.user.role !== "client") {
+      return res.status(403).json({
+        success:false, 
+        message:"Only Client Can hire freelancers"
+      })
+    }
+
+    const client = await Client.findOne({userId});
+
+    if(!client) {
+      return res.status(404).json({
+        success:false, 
+        message:"Client not found"
+      })
+    }
+
+    const job = await Job.findById(jobId).session(session)
+
+    if(!job) {
+      return res.status(404).json({
+        success:false, 
+        message:"Job Not Found"
+      })
+    }
+
+    if(job.clientId.toString() !== client._id.toString()) {
+      return res.status(403).json({
+        success:false, 
+        message:"You are not allowed to hire for this job"
+      })
+    }
+
+    if(job.selectedFreelancer) {
+      return res.status(400).json({
+        success:false, 
+        message:'Freelancer already hired for this job'
+      })
+    }
+
+    const selectedProposal = await Proposal.findById(proposalId)
+    .session(session)
+
+    if(!selectedProposal) {
+      return res.status(404).json({
+        success:false, 
+        message:'Proposal not found'
+      })
+    }
+
+    if(selectedProposal.jobId.toString() !== jobId) {
+  return res.status(400).json({
+    success:false,
+    message:"This proposal does not belong to this job"
+  })
+}
+
+if(selectedProposal.status !== "pending") {
+  return res.status(400).json({
+    success:false,
+    message:"This proposal cannot be hired"
+  })
+}
+
+    // Accept the proposal
+    selectedProposal.status = "accepted";
+    await selectedProposal.save({session})
+
+    // Reject all other proposals
+    await Proposal.updateMany(
+      {
+        jobId,
+        _id:{$ne: proposalId}
+      },
+      {
+        $set: {
+          status: "rejected"
+        }
+      },
+      {session}
+    )
+
+    // updated the job
+    job.selectedFreelancer = selectedProposal.freelancerId;
+
+    job.status = "in-progress";
+
+    await job.save({session})
+
+    // Create Agreement
+
+    const agreement = await Agreement.create(
+      [
+        {
+          jobId:job._id,
+          clientId: client._id,
+          freelancerId:selectedProposal.freelancerId,
+          proposalId: selectedProposal._id, 
+          status:'active'
+        }
+      ],
+      {session}
+    )
+
+    await session.commitTransaction();
+
+    return res.status(200).json({
+      success:true, 
+      message:"Freelancer hired successfully", 
+      agreement: agreement[0]
+    })
+  
+  } catch (error) {
+    await session.abortTransaction()
+      return res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: error.message,
+    });
+  } finally {
+    session.endSession()
   }
 }
