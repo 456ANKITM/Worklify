@@ -6,6 +6,7 @@ import authRoutes from "./routes/authRoutes.js";
 import freelancerRoutes from "./routes/freelancerRoutes.js";
 import clientRoutes from "./routes/clientRoutes.js";
 import jobRoutes from "./routes/jobRoutes.js";
+import notificationRoutes from "./routes/notificationRoutes.js";
 import connectCloudinary from "./config/cloudinary.js";
 
 dotenv.config();
@@ -31,3 +32,4 @@ app.use("/api/auth", authRoutes);
 app.use("/api/freelancer", freelancerRoutes);
 app.use("/api/client", clientRoutes);
 app.use("/api/job", jobRoutes);
+app.use("/api/notification", notificationRoutes)
