@@ -1,6 +1,8 @@
 import Freelancer from "../models/Freelancer.js";
 import { cloudinary } from "../config/cloudinary.js";
 import { uploadToCloudinary } from "../utils/cloudinaryUpload.js";
+import Agreement from "../models/Agreement.js";
+import Submission from "../models/Submission.js";
 
 export const updateBasicProfile = async (req, res) => {
     try {
@@ -716,6 +718,58 @@ export const deleteReview = async (req, res) => {
             success:false, 
             message:"Review Deleted Successfully",
             totalReviews: freelancer.reviews.length 
+        })
+        
+    } catch (error) {
+         return res.status(500).json({
+            success:false, 
+            message:"Server Error",
+            error:error.message
+        })
+    }
+}
+
+export const submitWork = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const {agreementId} = req.params;
+        const {message, files} = req.body; 
+
+        if(req.user.role !== "freelancer") {
+            return res.status(403).json({
+                success:false, 
+                message:"Only freelancers can submit work"
+            })
+        }
+
+        const agreement = await Agreement.findById(agreementId);
+
+        if(!agreement) {
+            return res.status(404).json({
+                success:false, 
+                message:"Agreement not found"
+            })
+        }
+
+        if(agreement.freelancerId.toString() !== userId.toString()) {
+            return res.status(403).json({
+                success:false, 
+                message:"Not Your agreement"
+            })
+        }
+
+        const submission = await Submission.create({
+            agreementId, 
+            freelancerId: userId, 
+            clientId: agreement.clientId, 
+            message,
+            files: files || []
+        })
+
+        return res.status(201).json({
+            success:true, 
+            message:"Work Submitted Successfully",
+            data: submission
         })
         
     } catch (error) {

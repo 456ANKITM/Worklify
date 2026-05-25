@@ -466,11 +466,7 @@ export const getAllProposalsForJob = async (req, res) => {
   }
 };
 
-/*
-|--------------------------------------------------------------------------
-| HIRE FREELANCER
-|--------------------------------------------------------------------------
-*/
+
 
 export const hireFreelancer = async (req, res) => {
   const session = await mongoose.startSession();
@@ -571,8 +567,8 @@ export const hireFreelancer = async (req, res) => {
       [
         {
           jobId: job._id,
-          clientId: client._id,
-          freelancerId: selectedProposal.freelancerId,
+          clientId: client.userId,
+          freelancerId: selectedProposal.userId,
           proposalId: selectedProposal._id,
           status: "active",
         },
@@ -614,11 +610,7 @@ export const hireFreelancer = async (req, res) => {
   }
 };
 
-/*
-|--------------------------------------------------------------------------
-| SEND COMPLETION REQUEST
-|--------------------------------------------------------------------------
-*/
+
 
 export const sendCompletionRequest = async (req, res) => {
   try {
@@ -677,11 +669,7 @@ export const sendCompletionRequest = async (req, res) => {
   }
 };
 
-/*
-|--------------------------------------------------------------------------
-| APPROVE COMPLETION REQUEST
-|--------------------------------------------------------------------------
-*/
+
 
 export const approveCompletionRequest = async (req, res) => {
   const session = await mongoose.startSession();
@@ -768,11 +756,7 @@ export const approveCompletionRequest = async (req, res) => {
   }
 };
 
-/*
-|--------------------------------------------------------------------------
-| REJECT COMPLETION REQUEST
-|--------------------------------------------------------------------------
-*/
+
 
 export const rejectCompletionRequest = async (req, res) => {
   try {

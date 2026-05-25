@@ -32,7 +32,8 @@ const submissionSchema = new mongoose.Schema({
     files:[fileSchema], 
     status:{
         type:String, 
-        enum:["submitted", "approved", "rejected"]
+        enum:["submitted", "approved", "rejected"],
+        default:"submitted"
     },
     submittedAt:{
         type: Date, 
