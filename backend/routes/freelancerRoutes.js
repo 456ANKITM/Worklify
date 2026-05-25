@@ -1,6 +1,6 @@
 import express from "express";
 import { protect } from "../middleware/authMiddleware.js";
-import { addCategory, addCertification, addEducation, addExperience, addLinks, addSkills, removeCategory, removeCertification, removeEducation, removeExperience, removeLinks, removeProfileImage, removeSkills, toogleAvailability, updateBasicProfile, updateProfileImage } from "../controllers/freelancerController.js";
+import { addCategory, addCertification, addEducation, addExperience, addLinks, addSkills, getAllReviews, removeCategory, removeCertification, removeEducation, removeExperience, removeLinks, removeProfileImage, removeSkills, toogleAvailability, updateBasicProfile, updateProfileImage } from "../controllers/freelancerController.js";
 import { uploadFields } from "../middleware/upload.js";
 
 const router = express.Router();
@@ -21,5 +21,6 @@ router.delete("/removeCertification", protect, removeCertification);
 router.put("/changeAvailability", protect, toogleAvailability)
 router.put("/updateProfileImage", protect, uploadFields, updateProfileImage)
 router.delete("/removeProfileImage", protect, removeProfileImage);
+router.get("/reviews/:freelancerId", getAllReviews);
 
 export default router;

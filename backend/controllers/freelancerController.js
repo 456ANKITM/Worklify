@@ -644,3 +644,31 @@ export const removeProfileImage = async (req, res) => {
         })
     }
 }
+
+export const getAllReviews = async (req, res) => {
+    try {
+        const {freelancerId } = req.params; 
+
+        const freelancer = await Freelancer.findById(freelancerId)
+        .populate("reviews.reviewerId", "clientName profileImage")
+
+        if(!freelancer) {
+            return res.status(404).json({
+                success:false, 
+                message:"freelancer not found"
+            })
+        }
+
+        return res.status(200).json({
+            success:true,
+            totalReviews:freelancer.reviews.length, 
+            data:freelancer.reviews
+        })
+    } catch (error) {
+          return res.status(500).json({
+            success:false, 
+            message:"Server Error",
+            error:error.message
+        })
+    }
+}
