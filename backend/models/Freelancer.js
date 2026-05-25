@@ -15,6 +15,23 @@ const reviewSchema = new mongoose.Schema(
     {timestamps:true}
 )
 
+const ratingSchema = new mongoose.Schema(
+    {
+        raterId:{
+            type:mongoose.Schema.Types.ObjectId, 
+            ref:'Auth',
+            required:true
+        },
+        rating:{
+            type:Number, 
+            required:true,
+            min: 1, 
+            max: 5
+        }
+    },
+    {timestamps:true}
+)
+
 export const experienceSchema = new mongoose.Schema(
     {
         company:String,
@@ -92,6 +109,7 @@ const freelancerSchema = new mongoose.Schema ({
         enum:["available", "not-available"],
         default:"available"
     },
+    ratings:[ratingSchema],
     averageRating:{
         type:Number,
         default:0

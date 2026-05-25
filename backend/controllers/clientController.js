@@ -1,4 +1,5 @@
 import Client from "../models/Client.js";
+import Freelancer from "../models/Freelancer.js";
 import { uploadToCloudinary } from "../utils/cloudinaryUpload.js";
 
 export const updateClientBasicProfile = async (req, res) => {
@@ -103,6 +104,91 @@ export const removeProfileImage = async (req, res) => {
         
     } catch (error) {
          return res.status(500).json({
+            success:false, 
+            message:"Server Error",
+            error:error.message
+        })
+    }
+}
+
+export const rateFreelancer = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        if(req.user.role !== "client") {
+            return res.status(403).json({
+                success:false, 
+                message:"Only Clients can rate freelancer"
+            })
+        }
+        const {freelancerId} = req.params;
+        const {rating} = req.body;
+
+        if(!rating) {
+            return res.status(400).json({
+                success:false, 
+                message:"Rating is required"
+            })
+        }
+
+        if(rating < 1 || rating > 5) {
+            return res.status(400).json({
+                success:false, 
+                message:"Rating must be between 1 and 5"
+            })
+        }
+
+        const client = await Client.findOne({userId});
+
+        if(!client) {
+            return res.status(404).json({
+                success:false, 
+                message:'Client not found'
+            })
+        }
+
+        const freelancer = await Freelancer.findById(freelancerId);
+
+        if(!freelancer) {
+            return res.status(404).json({
+                success:false, 
+                message:"Freelancer not found"
+            })
+        }
+
+        // Prevent dublicate rating from same client 
+        const allreadyRated = freelancer.ratings.find(
+            (r) => r.raterId.toString === userId.toString()
+        )
+
+        if(allreadyRated) {
+            return res.status(400).json({
+                success:false, 
+                message:"You have already rated this freelancer"
+            })
+        }
+        
+
+        freelancer.ratings.push({
+            raterId: userId, 
+            rating
+        })
+
+        // calculate the average rating  
+        const total = freelancer.ratings.reduce(
+            (sum, r) => sum + r.rating, 0
+        )
+
+        freelancer.averageRating = total / freelancer.ratings.length
+
+        await freelancer.save(); 
+
+        return res.status(200).json({ 
+            success:true, 
+            message:"Rating submitted successfully", 
+            averageRating: freelancer.averageRating
+        })
+    } catch (error) {
+        return res.status(500).json({
             success:false, 
             message:"Server Error",
             error:error.message

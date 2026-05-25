@@ -46,6 +46,7 @@ Task 3: Build the Notification Schema and Create Notifcation through different c
 Task 1:  Fix the Bug of recipient ID of the notifications [Done]
 Task 2: Create an API to get count of unread notifications of the user [Done] 
 Task 3: Create an API to mark all notification as read 
+Task 4: Create an API to rate the freelancer and in order to rate the freelancer you need to be the client after the rating we should return the average rating calculate the rating and return average rating, 
 
 
 
