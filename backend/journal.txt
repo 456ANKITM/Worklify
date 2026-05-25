@@ -43,7 +43,9 @@ Task 3: Build the Notification Schema and Create Notifcation through different c
 
 2026-05-25 
 
-Task 1:  Fix the Bug of recipient ID of the notifications 
+Task 1:  Fix the Bug of recipient ID of the notifications [Done]
+
+Task 2: Create an API to get count of unread notifications of the user 
 
 
 
