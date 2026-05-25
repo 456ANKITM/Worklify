@@ -45,3 +45,31 @@ export const getUnreadNotificationsCount = async (req, res) => {
         })
     }
 }
+
+export const markAllNotificationAsRead = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        await Notification.updateMany(
+            {
+                recipientId: userId, 
+                isRead: false
+            },
+            {
+                $set:{
+                    isRead: true
+                }
+            }
+        )
+
+        return res.status(200).json({
+            sucess:false, 
+            message:"All Notifications is mark as read"
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success:false, 
+            message:"Server Error",
+            error:error.message
+        })
+    }
+}
