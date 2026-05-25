@@ -195,3 +195,75 @@ export const rateFreelancer = async (req, res) => {
         })
     }
 }
+
+export const reviewFreelancer = async (req, res) => {
+    try {
+        const userId = req.user._id;
+
+        // Only client can review 
+        if(req.user.role !== "client") {
+            return res.status(403).json({
+                success:false, 
+                message:"Only clients can review freelancer"
+            })
+        }
+
+        const {freelancerId} = req.params; 
+        const {comment} = req.body; 
+
+        if(!comment || comment.trim() === "") {
+            return res.status(400).json({
+                success:false, 
+                message:"Comment is required"
+            })
+        }
+
+        const client = await Client.findOne({userId})
+
+        if(!client) {
+            return res.status(404).json({
+                success:false, 
+                message:"Client not found"
+            })
+        }
+
+        const freelancer = await Freelancer.findById(freelancerId)
+
+        if(!freelancer) {
+            return res.status(404).json({
+                success:false, 
+                message:'Freelancer not found'
+            })
+        }
+
+        const allreadyReviewed = freelancer.reviews.find(
+            (r) => r.reviewerId.toString() === userId.toString()
+        )
+
+        if(allreadyReviewed) {
+            return res.status(400).json({
+                success:false, 
+                message:"You have already reviewed this freelancer"
+            })
+        }
+
+        freelancer.reviews.push({
+            reviewerId: userId, 
+            comment
+        })
+
+        await freelancer.save();
+
+        return res.status(200).json({
+            success:false, 
+            message:'Review added successfully',
+            totalReviews:freelancer.reviews.length
+        })
+    } catch (error) {
+         return res.status(500).json({
+            success:false, 
+            message:"Server Error",
+            error:error.message
+        })
+    }
+}
