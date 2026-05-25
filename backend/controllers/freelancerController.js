@@ -672,3 +672,57 @@ export const getAllReviews = async (req, res) => {
         })
     }
 }
+
+export const deleteReview = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const {freelancerId, reviewId} = req.params;
+
+        const freelancer = await Freelancer.findById(freelancerId);
+
+        if(!freelancer) {
+            return res.status(404).json({
+                success:false, 
+                message:"Freelancer not found"
+            })
+        }
+
+        // find review
+        const review = freelancer.reviews.id(reviewId);
+
+        if(!review) {
+            return res.status(404).json({
+                success:false, 
+                message:"Review not found"
+            })
+        }
+
+        // Check Ownership 
+        if(review.reviewerId.toString() !== userId.toString()) {
+            return res.status(403).json({
+                success:false, 
+                message:"You are not allowed to delete this review"
+            })
+        }
+
+        // remove review
+        freelancer.reviews = freelancer.reviews.filter(
+            (r) => r._id.toString() !== reviewId
+        )
+
+        await freelancer.save();
+
+        return res.status(200).json({
+            success:false, 
+            message:"Review Deleted Successfully",
+            totalReviews: freelancer.reviews.length 
+        })
+        
+    } catch (error) {
+         return res.status(500).json({
+            success:false, 
+            message:"Server Error",
+            error:error.message
+        })
+    }
+}

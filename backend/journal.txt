@@ -48,7 +48,8 @@ Task 2: Create an API to get count of unread notifications of the user [Done]
 Task 3: Create an API to mark all notification as read 
 Task 4: Create an API to rate the freelancer and in order to rate the freelancer you need to be the client after the rating we should return the average rating calculate the rating and return average rating [Done]
 Task 5: Create an API to review the freelancer we should take comment and add those review in reviews field of the freelancer [Done]
-Task 6: Create an API to get all the reviews for the freelancer 
+Task 6: Create an API to get all the reviews for the freelancer [Done]
+Task 7: Create an API to delete the review if you are the owner of the review 
 
 
 
