@@ -70,46 +70,6 @@ const PublicNavbar = () => {
                 Find Talent
               </a>
 
-              {/* Categories */}
-              <div className="relative">
-                <button
-                  onClick={() => setCategoriesOpen(!categoriesOpen)}
-                  onBlur={() =>
-                    setTimeout(() => setCategoriesOpen(false), 160)
-                  }
-                  className="flex items-center gap-1 text-sm font-medium"
-                >
-                  Categories
-
-                  <ChevronDown
-                    size={15}
-                    className={`transition-transform duration-200 ${
-                      categoriesOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-
-                {categoriesOpen && (
-                  <div className="absolute top-[calc(100%+16px)] left-1/2 -translate-x-1/2 w-80 bg-white border border-zinc-200 rounded-2xl shadow-2xl p-3 animate-in fade-in slide-in-from-top-2 duration-200">
-                    <div className="flex flex-col gap-1">
-                      {categories.map((cat) => (
-                        <div
-                          key={cat.label}
-                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-zinc-100 cursor-pointer transition-colors"
-                        >
-                          <div className="w-8 h-8 rounded-lg bg-zinc-100 flex items-center justify-center text-sm">
-                            {cat.icon}
-                          </div>
-
-                          <span className="text-sm font-medium">
-                            {cat.label}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
             </div>
 
             {/* Desktop Buttons */}
@@ -167,39 +127,7 @@ const PublicNavbar = () => {
                 </a>
               ))}
 
-              {/* Mobile Categories */}
-              <div>
-                <button
-                  onClick={() => setCategoriesOpen(!categoriesOpen)}
-                  className="w-full flex items-center justify-between px-3 py-3 rounded-xl text-sm font-medium hover:bg-zinc-100 transition-colors"
-                >
-                  Categories
-
-                  <ChevronDown
-                    size={15}
-                    className={`transition-transform duration-200 ${
-                      categoriesOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-
-                {categoriesOpen && (
-                  <div className="ml-3 mt-1 border-l-2 border-zinc-100 pl-3 flex flex-col gap-1">
-                    {categories.map((cat) => (
-                      <div
-                        key={cat.label}
-                        className="flex items-center gap-3 px-2 py-2.5 rounded-lg hover:bg-zinc-100 transition-colors cursor-pointer"
-                      >
-                        <span>{cat.icon}</span>
-
-                        <span className="text-sm text-zinc-700">
-                          {cat.label}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+            
 
               {/* Mobile Buttons */}
               <div className="flex flex-col gap-2 pt-4 mt-3 border-t border-zinc-100">
