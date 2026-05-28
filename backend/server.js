@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import cookieParser from "cookie-parser";
+import cors from "cors"
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import freelancerRoutes from "./routes/freelancerRoutes.js";
@@ -15,6 +16,12 @@ const PORT = process.env.PORT || 4000;
 
 const app = express();
 app.use(express.json());
+app.use(
+  cors({
+    origin: process.env.ORIGIN || "http://localhost:5173" ,
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 
 await connectDB();

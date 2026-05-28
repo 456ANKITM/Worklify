@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import { Search, ArrowRight, BriefcaseBusiness, Users } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
   const [query, setQuery] = useState("");
+  const navigate = useNavigate();
 
   const handleFindJobs = () => {
-    console.log("Find jobs for:", query);
-    // navigate(`/jobs?search=${query}`)
+    if(!query.trim()) return;
+    navigate(`/jobs/search?q=${encodeURIComponent(query)}`)
   };
 
   const handleHireFreelancers = () => {
-    console.log("Find freelancers for:", query);
-    // navigate(`/freelancers?search=${query}`)
+    if(!query.trim()) return;
+    navigate(`/freelancers/search?q=${encodeURIComponent(query)}`)
   };
 
   return (
