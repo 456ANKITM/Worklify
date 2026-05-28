@@ -1,4 +1,5 @@
 2026-05-28 
 
 Task 1: Build 2 APIs for public Search of freelancer and Jobs With a querry. [Done]
-Task 2: Set up redux and RTK Query for an API Calls to backend. You can take reference from your servigo project on how to do it. after doing it build 1 search result page and test the search API if it working or not 
+Task 2: Set up redux and RTK Query for an API Calls to backend. You can take reference from your servigo project on how to do it. after doing it build 1 search result page and test the search API if it working or not [Done]
+Task 3: Get the Search results for both freelancers and job from the backend display them well in your frontend make the UI Impressive 
