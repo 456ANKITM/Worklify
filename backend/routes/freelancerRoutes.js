@@ -1,10 +1,11 @@
 import express from "express";
 import { protect } from "../middleware/authMiddleware.js";
-import { addCategory, addCertification, addEducation, addExperience, addLinks, addSkills, deleteReview, getAllReviews, removeCategory, removeCertification, removeEducation, removeExperience, removeLinks, removeProfileImage, removeSkills, toogleAvailability, updateBasicProfile, updateProfileImage } from "../controllers/freelancerController.js";
+import { addCategory, addCertification, addEducation, addExperience, addLinks, addSkills, deleteReview, getAllReviews, removeCategory, removeCertification, removeEducation, removeExperience, removeLinks, removeProfileImage, removeSkills, searchFreelancers, toogleAvailability, updateBasicProfile, updateProfileImage } from "../controllers/freelancerController.js";
 import { uploadFields } from "../middleware/upload.js";
 
 const router = express.Router();
 
+router.get("/search", searchFreelancers);
 router.post("/update/basic-profile", protect, updateBasicProfile);
 router.post("/addSkills", protect, addSkills);
 router.post("/removeSkills", protect, removeSkills);

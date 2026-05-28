@@ -6,11 +6,7 @@ import Proposal from "../models/Proposal.js";
 import mongoose from "mongoose";
 import { createNotification } from "../utils/createNotification.js";
 
-/*
-|--------------------------------------------------------------------------
-| POST JOB
-|--------------------------------------------------------------------------
-*/
+
 
 export const postJob = async (req, res) => {
   try {
@@ -82,11 +78,6 @@ export const postJob = async (req, res) => {
   }
 };
 
-/*
-|--------------------------------------------------------------------------
-| GET ALL JOBS
-|--------------------------------------------------------------------------
-*/
 
 export const getAllJobs = async (req, res) => {
   try {
@@ -108,11 +99,7 @@ export const getAllJobs = async (req, res) => {
   }
 };
 
-/*
-|--------------------------------------------------------------------------
-| SEARCH JOBS
-|--------------------------------------------------------------------------
-*/
+
 
 export const searchJobs = async (req, res) => {
   try {

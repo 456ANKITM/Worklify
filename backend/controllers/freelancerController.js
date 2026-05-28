@@ -780,3 +780,34 @@ export const submitWork = async (req, res) => {
         })
     }
 }
+
+export const searchFreelancers = async (req, res) => {
+    try {
+        const q = req.query.q || "";
+
+        const freelancers = await Freelancer.find({
+            $or: [
+                { professionalTitle: { $regex: q, $options: "i" } },
+                { skills: { $regex: q, $options: "i" } },
+                { bio: { $regex: q, $options: "i" } },
+                { category: { $regex: q, $options: "i" } }, // ✅ added category search
+                { freelancerName: { $regex: q, $options: "i" } }, // optional but useful
+            ]
+        })
+        .select("-__v")
+        .sort({ averageRating: -1, createdAt: -1 }); // ✅ fixed sorting
+
+        return res.status(200).json({
+            success: true,
+            count: freelancers.length,
+            freelancers
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Server Error",
+            error: error.message
+        });
+    }
+};
