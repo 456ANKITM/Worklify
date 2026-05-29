@@ -811,3 +811,63 @@ export const searchFreelancers = async (req, res) => {
         });
     }
 };
+
+export const getTopFreelancersByCategory = async (req, res) => {
+    try {
+        const freelancers = await Freelancer.find();
+
+        const computeScore = (f) => {
+            const rating = f.averageRating || 0;
+            const reviews = f.reviews?.length || 0;
+            const experience = f.experience?.length || 0;
+            const education = f.education?.length || 0;
+            const certifications = f.certifications?.length || 0;
+            const profileFields = [
+                f.freelancerName,
+                f.professionalTitle, 
+                f.profileImage,
+                f.bio,
+                f.address,
+                f.skills?.length
+            ];
+            const computedFields = profileFields.filter(Boolean).length;
+            const profileCompletion = (computedFields/profileFields.length) * 5; 
+
+            return (
+                rating * 4 + reviews * 0.5 + profileCompletion * 2 + experience * 0.5 + education * 0.5 + certifications * 0.5
+            )
+        }
+
+        // Step 1: Group By Category 
+        const grouped = {}
+        freelancers.forEach((f)=>{
+            f.category.forEach((cat)=>{
+                if(!grouped[cat]) grouped[cat] = []
+                grouped[cat].push({
+                    ...f._doc,
+                    score:computeScore(f)
+                })
+            })
+        })
+
+    //   Step 2: Sort + Take top 8 per category 
+    const result = {};
+    Object.keys(grouped).forEach((cat)=>{
+        result[cat] = grouped[cat]
+        .sort((a,b)=>b.score - a.score)
+    })
+
+    res.status(200).json({
+        success:true, 
+        data: result
+    })
+
+        
+    } catch (error) {
+         return res.status(500).json({
+            success: false,
+            message: "Server Error",
+            error: error.message
+        });
+    }
+}
