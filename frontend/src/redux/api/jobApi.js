@@ -11,8 +11,13 @@ export const jobApi = createApi({
             query: (q) => ({
                 url:`/searchJobs?q=${q}`
             })
+        }),
+        getAllJobs: builder.query({
+            query:() => ({
+                url:'/getAllJobs'
+            })
         })
     })
 })
 
-export const {useSearchJobsQuery} = jobApi
+export const {useSearchJobsQuery, useGetAllJobsQuery} = jobApi

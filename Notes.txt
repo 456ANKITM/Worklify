@@ -9,3 +9,4 @@ Task 4: Build find-work and find-talent page where in work page we will return a
 
 Task 1: Develop and Test the API to return top 8 freelancers of each category.[Done]
 Task 2: Create an RTK Query to get these top freelancers and display them in a good UI in find talent page in our frontend 
+Task 3: Test the API to return all the tops and after that call that API through RTK Query and the display the results in the FindWork page in a Very good UI 
