@@ -5,10 +5,10 @@ import generateToken from "../utils/generateToken.js";
 
 export const signup = async (req, res) => {
     try {
-        const {phone, password, role} = req.body;
+        const {email, password, role} = req.body;
 
         // Check if all 3 fields exists and if not throw an error
-        if(!phone || !password || !role) {
+        if(!email || !password || !role) {
             return res.status(400).json({
                 success:false,
                 message:"All Fields are required"
@@ -16,7 +16,7 @@ export const signup = async (req, res) => {
         }
 
         // Check if the user already exists with this phone Number
-        const existingUser = await Auth.findOne({phone});
+        const existingUser = await Auth.findOne({email});
         if(existingUser) {
             return res.status(400).json({
                 success:false,
@@ -26,7 +26,7 @@ export const signup = async (req, res) => {
 
         // Create auth user
         const user = await Auth.create({
-            phone,
+            email,
             password,
             role
         })
@@ -64,18 +64,18 @@ export const signup = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
-        const {phone, password} = req.body;
+        const {email, password} = req.body;
 
         // Check if all fields are present there to log in 
-        if(!phone || !password) {
+        if(!email || !password) {
             return res.status(400).json({
                 success:false,
-                message:"Phone and Password are required"
+                message:"Email and Password are required"
             })
         }
 
         // Find user
-        const user = await Auth.findOne({phone})
+        const user = await Auth.findOne({email})
 
         if(!user) {
             return res.status(401).json({
@@ -111,7 +111,7 @@ export const login = async (req, res) => {
             message:"Login Successful",
             user:{
                 _id: user._id,
-                phone: user.phone,
+                email: user.email,
                 role: user.role
             }
         })

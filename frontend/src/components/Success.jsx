@@ -18,7 +18,7 @@ const Success = ({
 
   return (
     <div className="fixed z-50 
-    top-4 right-4 -translate-x-1/2 w-[92%] max-w-sm
+    top-4 right-4  w-[92%] max-w-sm
     md:top-15 md:right-6 md:translate-x-0 md:w-auto
     bg-[#1c1c1c] text-white inline-flex space-x-3 p-4 text-sm rounded-2xl border border-gray-700 shadow-2xl animate-fadeIn">
 

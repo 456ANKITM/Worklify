@@ -4,25 +4,23 @@ import PublicNavbar from "../../components/PublicNavbar";
 import Footer from "../../components/Footer";
 
 import {
-  Phone,
+  Mail,
   Lock,
   ArrowRight,
   Sparkles,
-  CheckCircle2,
 } from "lucide-react";
 
-import { useSignupFreelancerMutation } from "../../redux/api/authApi";
+import { useSignupMutation } from "../../redux/api/authApi";
 import Success from "../../components/Success";
 import Error from "../../components/Error";
 
 const FreelancerSignup = () => {
   const navigate = useNavigate();
 
-  const [signupFreelancer, { isLoading }] =
-    useSignupFreelancerMutation();
+  const [signup, { isLoading }] = useSignupMutation();
 
   const [form, setForm] = useState({
-    phone: "",
+    email: "",
     password: "",
   });
 
@@ -36,51 +34,52 @@ const FreelancerSignup = () => {
     });
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  setError("");
-  setSuccess("");
+    setError("");
+    setSuccess("");
 
-  try {
-    const res = await signupFreelancer({
-      ...form,
-      role: "freelancer",
-    }).unwrap();
+    try {
+      const res = await signup({
+        ...form,
+        role: "freelancer",
+      }).unwrap();
 
-    console.log("Signup Success:", res);
+      console.log("Signup Success:", res);
 
-    if (res.success) {
-      setSuccess(res.message);
+      if (res.success) {
+        setSuccess(res.message);
 
-      setTimeout(() => {
-        navigate("/freelancer/login");
-      }, 1500);
+        setTimeout(() => {
+          navigate("/freelancer/login");
+        }, 1500);
+      }
+    } catch (err) {
+      setError(
+        err?.data?.message ||
+          "User signup failed due to some issue"
+      );
     }
-  } catch (err) {
-    setError(
-      err?.data?.message ||
-        "User signup failed due to some issue"
-    );
-  }
-};
+  };
 
   return (
     <>
       <PublicNavbar />
-      {success && (
-  <Success
-    title="Signup Successful"
-    message={success}
-  />
-)}
 
-{error && (
-  <Error
-    title="Signup Failed"
-    message={error}
-  />
-)}
+      {success && (
+        <Success
+          title="Signup Successful"
+          message={success}
+        />
+      )}
+
+      {error && (
+        <Error
+          title="Signup Failed"
+          message={error}
+        />
+      )}
 
       <div className="min-h-screen bg-white flex items-center justify-center px-4 py-16">
         <div className="w-full max-w-md">
@@ -107,21 +106,21 @@ const FreelancerSignup = () => {
             onSubmit={handleSubmit}
             className="border border-gray-200 rounded-3xl p-8 bg-white shadow-sm space-y-6"
           >
-            {/* PHONE */}
+            {/* EMAIL */}
             <div>
               <label className="text-sm font-medium text-gray-600">
-                Phone Number
+                Email Address
               </label>
 
               <div className="mt-2 flex items-center border border-gray-300 rounded-xl px-3 py-3 focus-within:border-black transition">
-                <Phone size={18} className="text-gray-500" />
+                <Mail size={18} className="text-gray-500" />
 
                 <input
-                  type="text"
-                  name="phone"
-                  value={form.phone}
+                  type="email"
+                  name="email"
+                  value={form.email}
                   onChange={handleChange}
-                  placeholder="Enter phone number"
+                  placeholder="Enter your email"
                   className="w-full outline-none ml-3"
                   required
                 />
@@ -149,15 +148,16 @@ const FreelancerSignup = () => {
               </div>
             </div>
 
-           
-
             {/* SUBMIT */}
             <button
               type="submit"
               disabled={isLoading}
               className="w-full bg-black text-white py-3 rounded-xl font-semibold flex items-center justify-center gap-2 hover:scale-[1.02] transition disabled:opacity-60"
             >
-              {isLoading ? "Creating Account..." : "Create Account"}
+              {isLoading
+                ? "Creating Account..."
+                : "Create Account"}
+
               <ArrowRight size={18} />
             </button>
           </form>

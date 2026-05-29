@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
 const authSchema = new mongoose.Schema({
-    phone:{type:String,required:true,unique:true,trim:true},
+    email:{type:String,required:true,unique:true,trim:true},
     password:{type:String,required:true,minLength:6},
     role:{
         type:String,

@@ -7,14 +7,15 @@ export const authApi = createApi({
         credentials:'include',
     }),
     endpoints: (builder) => ({
-        signupFreelancer:builder.mutation({
+        signup:builder.mutation({
             query: (data) => ({
                 url:"/signup",
                 method:'POST',
                 body:data
             })
-        })
+        }),
+        
     })
 })
 
-export const {useSignupFreelancerMutation} = authApi
+export const {useSignupMutation} = authApi

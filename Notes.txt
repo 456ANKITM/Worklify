@@ -12,4 +12,4 @@ Task 2: Create an RTK Query to get these top freelancers and display them in a g
 Task 3: Test the API to return all the tops and after that call that API through RTK Query and the display the results in the FindWork page in a Very good UI [Done]
 Task 4: Build the API to get all the Jobs by Certain Category and then call the API create that page [Done]
 Task 5: Build 1 Choose Page where the user will chose whether they want to create a profile as freelancer or client when we click on signup page we should move to this page [Done] 
-Task 6: Complete the Sign up page and sign up functionality for the freelancer [Done]
+Task 7: There is 1 Bug We should be able to signup with our e-mail not phone number but an email because nodemailer is free [Done]
