@@ -14,6 +14,7 @@ import {
   Users,
   ArrowRight,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const categories = [
   { title: "Software Development", icon: Code2 },
@@ -31,6 +32,7 @@ const categories = [
 ];
 
 const CategoriesSection = () => {
+  const navigate = useNavigate();
   return (
     <section className="w-full bg-white text-black py-20 px-4 md:px-10">
       <div className="max-w-7xl mx-auto">
@@ -58,6 +60,7 @@ const CategoriesSection = () => {
 
             return (
               <div
+                onClick={()=>navigate(`/category/${encodeURIComponent(category.title)}`)}
                 key={index}
                 className="group relative rounded-2xl border border-gray-200 bg-white p-6 hover:shadow-lg hover:border-gray-300 transition-all duration-300 cursor-pointer"
               >

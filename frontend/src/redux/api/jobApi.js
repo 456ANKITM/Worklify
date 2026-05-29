@@ -16,8 +16,13 @@ export const jobApi = createApi({
             query:() => ({
                 url:'/getAllJobs'
             })
+        }),
+        getJobsByCategory: builder.query({
+            query: (category) => ({
+                url:`/category?category=${category}`
+            })
         })
     })
 })
 
-export const {useSearchJobsQuery, useGetAllJobsQuery} = jobApi
+export const {useSearchJobsQuery, useGetAllJobsQuery, useGetJobsByCategoryQuery} = jobApi

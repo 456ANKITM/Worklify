@@ -8,7 +8,7 @@ router.post("/postJob", protect, postJob)
 router.get("/getAllJobs", getAllJobs);
 router.get("/searchJobs", searchJobs);
 router.get("/getJobsByProfile", protect, getJobsBasedOnProfile);
-router.get("/category/:category", getJobsByCategory)
+router.get("/category", getJobsByCategory)
 router.post("/:jobId/proposal", protect, submitProposal);
 router.get("/:jobId/proposals", protect, getAllProposalsForJob);
 router.patch("/hire/:jobId/:proposalId", protect, hireFreelancer);

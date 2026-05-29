@@ -221,7 +221,7 @@ export const getJobsBasedOnProfile = async (req, res) => {
 
 export const getJobsByCategory = async (req, res) => {
   try {
-    const { category } = req.params;
+    const {category} = req.query;
 
     if (!category) {
       return res.status(400).json({

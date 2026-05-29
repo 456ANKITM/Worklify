@@ -4,6 +4,7 @@ import SearchedFreelancers from "./pages/SearchedFreelancers"
 import SearchedJobs from "./pages/SearchedJobs"
 import FindTalent from "./pages/FindTalent"
 import FindWork from "./pages/FindWork"
+import JobsByCategory from "./pages/JobsByCategory"
 const App = () => {
   return (
     <Routes> 
@@ -12,6 +13,7 @@ const App = () => {
       <Route path="/jobs/search" element={<SearchedJobs />} />
       <Route path="/find-talent" element={<FindTalent />} />
       <Route path="/find-work" element={<FindWork />} />
+      <Route path="/category/:category" element={<JobsByCategory />} />
     </Routes>
   )
 }
