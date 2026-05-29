@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const PublicNavbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [categoriesOpen, setCategoriesOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const onScroll = () => {
@@ -16,17 +16,7 @@ const PublicNavbar = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const categories = [
-    { label: "Design & Creative", icon: "✦" },
-    { label: "Engineering & Tech", icon: "⬡" },
-    { label: "Writing & Content", icon: "◈" },
-    { label: "Marketing & SEO", icon: "◎" },
-    { label: "Finance & Accounting", icon: "◇" },
-    { label: "Video & Animation", icon: "▷" },
-    { label: "Legal & Consulting", icon: "⊞" },
-    { label: "Customer Support", icon: "◉" },
-  ];
-
+ 
   return (
     <>
       <nav
@@ -78,7 +68,9 @@ const PublicNavbar = () => {
                 Log in
               </button>
 
-              <button className="border border-zinc-200 hover:border-black hover:bg-zinc-100 transition-all text-sm font-medium rounded-lg px-5 py-2">
+              <button 
+              onClick={()=>navigate("/choose-role")}
+              className="border border-zinc-200 hover:border-black hover:bg-zinc-100 transition-all text-sm font-medium rounded-lg px-5 py-2">
                 Sign up
               </button>
 
@@ -135,7 +127,9 @@ const PublicNavbar = () => {
                   Log in
                 </button>
 
-                <button className="w-full border border-zinc-200 rounded-lg py-2.5 text-sm font-medium hover:border-black hover:bg-zinc-100 transition-all">
+                <button 
+                onClick={()=>navigate("/choose-role")}
+                className="w-full border border-zinc-200 rounded-lg py-2.5 text-sm font-medium hover:border-black hover:bg-zinc-100 transition-all">
                   Sign up
                 </button>
 
