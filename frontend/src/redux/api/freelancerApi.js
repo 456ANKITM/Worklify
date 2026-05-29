@@ -11,8 +11,13 @@ export const freelancerApi = createApi({
             query: (q) => ({
                 url:`/search?q=${q}`
             })
+        }),
+        getTopFreelancers: builder.query({
+            query: () => ({
+                url:"/top-by-category"
+            })
         })
     })
 })
 
-export const {useSearchFreelancerQuery}  = freelancerApi
+export const {useSearchFreelancerQuery, useGetTopFreelancersQuery}  = freelancerApi
