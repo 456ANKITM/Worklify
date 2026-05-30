@@ -38,8 +38,6 @@ const FreelancerLogin = () => {
     try {
       const res = await login(form).unwrap();
 
-      console.log("Login Success:", res);
-
       if (res.success) {
         setSuccess(res.message);
         const user = res.user;
@@ -51,7 +49,7 @@ const FreelancerLogin = () => {
             if(!user.profileCompleted) {
                 navigate("/freelancer/profile-setup")
             } else {
-                navigate("/freealancer/browse-jobs")
+                navigate("/freelancer/main")
             }
           }
 

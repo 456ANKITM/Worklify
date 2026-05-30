@@ -13,12 +13,11 @@ import { useGetUserQuery } from "./redux/api/authApi"
 import { useEffect } from "react"
 import { setUser } from "./redux/slices/authSlice"
 import { useDispatch } from "react-redux"
+import FreelancerMain from "./pages/Freelancer/FreelancerMain"
 const App = () => {
   const dispatch = useDispatch();
-  const tokenExists = document.cookie.includes("token");
   const {data, isLoading} = useGetUserQuery(undefined, {
     refetchOnMountOrArgChange: true,
-    skip: !tokenExists
   });
   useEffect(()=>{
     if(data?.user) {
@@ -38,6 +37,7 @@ const App = () => {
       <Route path="/freelancer/signup" element={<FreelancerSignup />} />
       <Route path="/freelancer/login" element={<FreelancerLogin />} />
       <Route path="/freelancer/profile-setup" element={<FreelancerProfileSetup />} />
+      <Route path="/freelancer/main" element={<FreelancerMain />} />
       <Route path="/category/:category" element={<JobsByCategory />} />
     </Routes>
   )

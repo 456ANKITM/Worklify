@@ -21,4 +21,6 @@ Task 1: Make Your 3 Step Profile Onboarding of the freelancer with good UI and r
 
 Task 2: Create one userSlice and then update the state in that after  the user has been onboarded and their sills added and later if we change any updates of the user then also we will update this state. We can take reference of the project servigo for this. [Done]
 
+Task 3: So user has created their profile and entered into our application so what will they see they will se a freelance Navbar at the top then the main section which holds the jobs matching their profile in left section in right they will se some content and again when they click on their profile they will see a hamburger menu icon so the first task is to create FreelanceNavbar Component.. 
+
 
