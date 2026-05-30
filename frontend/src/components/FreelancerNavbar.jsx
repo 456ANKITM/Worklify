@@ -9,11 +9,13 @@ import {
   X,
 } from "lucide-react";
 import { useSelector } from "react-redux";
+import FreelancerSidebar from "./FreelancerSidebar";
 
 const FreelancerNavbar = () => {
-    const user = useSelector((state)=>state.auth.user)
+  const user = useSelector((state)=>state.auth.user)
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
 
@@ -85,8 +87,8 @@ const FreelancerNavbar = () => {
               </button>
 
               {/* Profile */}
-              <div
-  onClick={() => navigate("/freelancer/dashboard")}
+   <div
+  onClick={() => setSidebarOpen(true)}
   className="w-9 h-9 rounded-full cursor-pointer overflow-hidden border border-gray-200 hover:scale-105 transition"
 >
   {user?.profile?.profileImage ? (
@@ -157,6 +159,10 @@ const FreelancerNavbar = () => {
 
       {/* Spacer */}
       <div className="h-[104px]" />
+      <FreelancerSidebar
+  isOpen={sidebarOpen}
+  setIsOpen={setSidebarOpen}
+/>
     </>
   );
 };
