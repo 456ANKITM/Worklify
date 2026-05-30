@@ -16,8 +16,30 @@ export const freelancerApi = createApi({
             query: () => ({
                 url:"/top-by-category"
             })
-        })
+        }),
+        updateBasicProfile: builder.mutation({
+            query:(data) => ({
+                url:"/update/basic-profile",
+                method:"POST",
+                body:data
+            })
+        }),
+        addSkills: builder.mutation({
+            query:(skills) => ({
+                url:"/addSkills",
+                method:"POST",
+                body:skills
+            })
+        }),
+        addCategory: builder.mutation({
+            query:(category) => ({
+                url:"/addCategory",
+                method:"POST",
+                body:category
+            })
+        }),
+
     })
 })
 
-export const {useSearchFreelancerQuery, useGetTopFreelancersQuery}  = freelancerApi
+export const {useSearchFreelancerQuery, useGetTopFreelancersQuery, useUpdateBasicProfileMutation, useAddSkillsMutation, useAddCategoryMutation}  = freelancerApi

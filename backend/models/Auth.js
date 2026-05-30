@@ -8,6 +8,10 @@ const authSchema = new mongoose.Schema({
         type:String,
         enum:["client", "freelancer"],
         required:true
+    },
+    profileCompleted:{
+        type:Boolean, 
+        default:false
     }
 },{timestamps:true})
 

@@ -8,6 +8,7 @@ import JobsByCategory from "./pages/JobsByCategory"
 import ChooseRole from "./pages/ChooseRole"
 import FreelancerSignup from "./pages/Freelancer/FreelancerSignup"
 import FreelancerLogin from "./pages/Freelancer/FreelancerLogin"
+import FreelancerProfileSetup from "./pages/Freelancer/FreelancerProfileSetup"
 const App = () => {
   return (
     <Routes> 
@@ -19,6 +20,7 @@ const App = () => {
       <Route path="/choose-role" element={<ChooseRole />} />
       <Route path="/freelancer/signup" element={<FreelancerSignup />} />
       <Route path="/freelancer/login" element={<FreelancerLogin />} />
+      <Route path="/freelancer/profile-setup" element={<FreelancerProfileSetup />} />
       <Route path="/category/:category" element={<JobsByCategory />} />
     </Routes>
   )

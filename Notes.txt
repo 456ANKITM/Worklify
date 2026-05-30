@@ -13,3 +13,8 @@ Task 3: Test the API to return all the tops and after that call that API through
 Task 4: Build the API to get all the Jobs by Certain Category and then call the API create that page [Done]
 Task 5: Build 1 Choose Page where the user will chose whether they want to create a profile as freelancer or client when we click on signup page we should move to this page [Done] 
 Task 7: There is 1 Bug We should be able to signup with our e-mail not phone number but an email because nodemailer is free [Done]
+Task 8: Create an RTK Query to call the login API then Build the login Page and complete the login functionanlity for the freelancer. 
+
+2026-05-30 
+
+Task 1: Make Your 3 Step Profile Onboarding of the freelancer with good UI and responsive 
