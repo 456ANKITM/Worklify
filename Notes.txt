@@ -19,4 +19,6 @@ Task 8: Create an RTK Query to call the login API then Build the login Page and 
 
 Task 1: Make Your 3 Step Profile Onboarding of the freelancer with good UI and responsive [Done]
 
-Task 2: Create one userSlice and then update the state in that after  the user has been onboarded and their sills added and later if we change any updates of the user then also we will update this state. We can take reference of the project servigo for this. 
+Task 2: Create one userSlice and then update the state in that after  the user has been onboarded and their sills added and later if we change any updates of the user then also we will update this state. We can take reference of the project servigo for this. [Done]
+
+

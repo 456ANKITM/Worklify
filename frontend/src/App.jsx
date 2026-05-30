@@ -9,7 +9,24 @@ import ChooseRole from "./pages/ChooseRole"
 import FreelancerSignup from "./pages/Freelancer/FreelancerSignup"
 import FreelancerLogin from "./pages/Freelancer/FreelancerLogin"
 import FreelancerProfileSetup from "./pages/Freelancer/FreelancerProfileSetup"
+import { useGetUserQuery } from "./redux/api/authApi"
+import { useEffect } from "react"
+import { setUser } from "./redux/slices/authSlice"
+import { useDispatch } from "react-redux"
 const App = () => {
+  const dispatch = useDispatch();
+  const tokenExists = document.cookie.includes("token");
+  const {data, isLoading} = useGetUserQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    skip: !tokenExists
+  });
+  useEffect(()=>{
+    if(data?.user) {
+      dispatch(setUser(data.user))
+    }
+  },[data?.user, dispatch])
+
+  console.log(data)
   return (
     <Routes> 
       <Route path="/" element={<Home />} />

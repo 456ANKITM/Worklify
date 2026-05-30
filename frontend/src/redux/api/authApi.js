@@ -20,9 +20,14 @@ export const authApi = createApi({
                 method:"POST",
                 body:data
             })
+        }),
+        getUser: builder.query({
+            query: () => ({
+                url:"/me"
+            })
         })
         
     })
 })
 
-export const {useSignupMutation, useLoginMutation} = authApi
+export const {useSignupMutation, useLoginMutation, useGetUserQuery} = authApi
