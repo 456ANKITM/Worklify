@@ -140,9 +140,31 @@ export const logout = async (req, res) => {
 
 export const getMe = async (req, res) => {
     try{
+        const authUser = await Auth.findById(req.user._id).select("-password")
+        if(!authUser) {
+            return res.status(404).json({
+                success:false, 
+                message:"User Not Found"
+            })
+        }
+        let profile = null;
+        if(authUser.role === "freelancer") {
+            profile = await Freelancer.findOne({userId: authUser._id})
+        }
+        if(authUser.role === "client") {
+            profile = await Client.findOne({userId: authUser._id})
+        }
+
+        const user = {
+            _id: authUser._id, 
+            email: authUser.email, 
+            role: authUser.role,
+            profileCompleted:authUser.profileCompleted,
+            profile: profile || null
+        }
         res.status(200).json({
             success:true,
-            user:req.user
+            user
         })
     } catch (error) {
         return res.status(500).json({
